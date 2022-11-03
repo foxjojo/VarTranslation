@@ -1,12 +1,12 @@
 {
-    "ID": "E2811F70-094B-42E0-A64A-665E3910AACD",
-    "ActionKeyword": "!",
-    "Name": "VarTranslation",
-    "Description": "便捷翻译变量名",
-    "Author": "BrWang",
-    "Version": "1.0.0",
-    "Language": "csharp",
-    "Website": "https://github.com/BrWang/Flow.Launcher.Plugin.VarTranslation",
-    "IcoPath": "icon.png",
-    "ExecuteFileName": "Flow.Launcher.Plugin.VarTranslation.dll"
+  "ID": "E2811F70-094B-42E0-A64A-665E3910AACD",
+  "ActionKeyword": "@",
+  "Name": "VarTranslation",
+  "Description": "便捷翻译变量名",
+  "Author": "BrWang",
+  "Version": "1.0.0",
+  "Language": "csharp",
+  "Website": "https://github.com/foxjojo/VarTranslation.git",
+  "IcoPath": "icon.png",
+  "ExecuteFileName": "Flow.Launcher.Plugin.VarTranslation.dll"
 }
