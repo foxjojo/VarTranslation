@@ -32,8 +32,14 @@ namespace Flow.Launcher.Plugin.VarTranslation
 
         private async Task<List<Result>> GetData(string str)
         {
-            if(string.IsNullOrWhiteSpace(str))
+            if (string.IsNullOrWhiteSpace(str))
                 return new List<Result>();
+            if (CheckChinese(str))
+            {
+                _context.API.ShowMsg("只支持中文呦!");
+                return new List<Result>();
+            }
+
 
             List<Result> results = new List<Result>();
             var url = new StringBuilder();
@@ -54,20 +60,20 @@ namespace Flow.Launcher.Plugin.VarTranslation
                 TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
 
                 string snakeCase = myTI.ToLower(jsonData.text).Replace(' ', '_');
-                string camelCaseB =Regex.Replace( myTI.ToTitleCase(jsonData.text),@"\s","");
+                string camelCaseB = Regex.Replace(myTI.ToTitleCase(jsonData.text), @"\s", "");
                 string camelCaseS = camelCaseB.Substring(0, 1).ToLower() + camelCaseB.Substring(1);
 
                 results.Add(new Result()
                 {
                     Title = snakeCase,
                     SubTitle = "下划线命名",
-                    IcoPath ="icon.png",
+                    IcoPath = "icon.png",
                     Action = delegate (ActionContext context)
                     {
                         _context.API.CopyToClipboard(snakeCase);
                         return true;
                     }
-                }) ;
+                });
                 results.Add(new Result()
                 {
                     Title = camelCaseB,
@@ -82,7 +88,7 @@ namespace Flow.Launcher.Plugin.VarTranslation
                 results.Add(new Result()
                 {
                     Title = camelCaseS,
-                    SubTitle ="驼峰命名",
+                    SubTitle = "驼峰命名",
                     IcoPath = "icon.png",
                     Action = delegate (ActionContext context)
                     {
@@ -97,12 +103,26 @@ namespace Flow.Launcher.Plugin.VarTranslation
             catch (Exception)
             {
                 _context.API.LogInfo("VarTranslation", string.Format("需要查询的str:{0}", str));
-                _context.API.LogInfo("VarTranslation", string.Format("无法格式化json:{0}",json));
-               return new List<Result>();
+                _context.API.LogInfo("VarTranslation", string.Format("无法格式化json:{0}", json));
+                return new List<Result>();
             }
-          
+
         }
 
+        private bool CheckChinese(string s)
+        {
+            Regex regex = new Regex(@"[\u4e00-\u9fa5]");
+            bool result = false;
+            foreach (char ch in s)
+            {
+                if (!regex.IsMatch(ch.ToString()))
+                {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
         public class JsonData
         {
             public string type;
