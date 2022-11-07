@@ -40,15 +40,26 @@ namespace Flow.Launcher.Plugin.VarTranslation
                 return new List<Result>();
             }
 
-
             List<Result> results = new List<Result>();
             var url = new StringBuilder();
             url.Append("https://v.api.aa1.cn/api/api-fanyi-yd/index.php?msg=");
             url.Append(str);
             url.Append("&type=1");
-            var json = await _context.API.HttpGetStringAsync(url.ToString());
-            if (string.IsNullOrWhiteSpace(json))
+            string json = "";
+            try
+            {
+                json = await _context.API.HttpGetStringAsync(url.ToString());
+
+            }
+            catch (Exception)
+            {
+                _context.API.ShowMsg("网络出现问题了 请稍后再试哦");
                 return new List<Result> { };
+            }
+
+            if (string.IsNullOrWhiteSpace(json))
+                return new List<Result>() ;
+
             try
             {
                 var jsonData = JsonConvert.DeserializeObject<JsonData>(json);
